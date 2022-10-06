@@ -30,7 +30,4 @@ public class ActitvityController {
     public Activity findById(@PathVariable("id") int id) {
         return null;
     }
-
-    
-    
 }
