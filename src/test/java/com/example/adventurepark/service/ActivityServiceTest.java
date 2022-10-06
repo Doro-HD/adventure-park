@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
+import com.example.adventurepark.dto.ActivityResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -65,9 +66,9 @@ public class ActivityServiceTest {
 
     @Test
     void findById() {
-        Activity activity1 = this.activityService.findById(id1);
-        Activity activity2 = this.activityService.findById(id2);
-        Activity activity3 = this.activityService.findById(id3);
+        ActivityResponse activity1 = this.activityService.findById(id1, true);
+        ActivityResponse activity2 = this.activityService.findById(id2, true);
+        ActivityResponse activity3 = this.activityService.findById(id3, true);
 
         assertEquals(id1, activity1.getId());
         assertEquals(id2, activity2.getId());

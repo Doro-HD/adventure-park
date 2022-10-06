@@ -1,5 +1,6 @@
 package com.example.adventurepark.api;
 
+import com.example.adventurepark.dto.ActivityResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,13 +23,13 @@ public class ActitvityController {
     }
 
     @GetMapping
-    public ArrayList<Activity> getAll(){
-        return null;
+    public List<ActivityResponse> getAll(){
+        return this.activityService.getAll();
     }
 
     @GetMapping("/{id}")
-    public Activity findById(@PathVariable("id") int id) {
-        return null;
+    public ActivityResponse findById(@PathVariable("id") int id) {
+        return this.activityService.findById(id, false);
     }
 
     
