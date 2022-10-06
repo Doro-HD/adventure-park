@@ -18,9 +18,9 @@ public class ActivityServiceTest {
     
     public ActivityService activityService;
 
-    public static ActivityRepository activityRepository;
+    public static ActivityRepository activityRepositoryStatic;
 
-    private static int actualActivityCount;
+    private static int expectedActivityCount;
 
     private static int id1;
 
@@ -31,7 +31,7 @@ public class ActivityServiceTest {
 
     @BeforeAll
     public static void setupData(@Autowired ActivityRepository activityRepository) {
-        activityRepository = activityRepository;
+        activityRepositoryStatic = activityRepository;
         activityRepository.deleteAll();
 
         List<Activity> activities = List.of(
@@ -40,18 +40,19 @@ public class ActivityServiceTest {
             new Activity("GoKart", 21, "speed is key!")
         );
 
+        activityRepository.saveAll(activities);
+
         id1 = activities.get(0).getId();
         id2 = activities.get(1).getId();
         id3 = activities.get(2).getId();
 
-        actualActivityCount = activities.size();
+        expectedActivityCount = activities.size();
 
-        activityRepository.saveAll(activities);
     }
 
     @BeforeEach
     public void setActivityService() {
-        activityService = new ActivityService(activityRepository);
+        activityService = new ActivityService(activityRepositoryStatic);
     }
 
     
@@ -59,7 +60,7 @@ public class ActivityServiceTest {
     void getAll() {
         int activityCount = this.activityService.getAll().size();
 
-        assertEquals(activityCount , actualActivityCount);
+        assertEquals(expectedActivityCount, activityCount);
     }
 
     @Test
@@ -68,8 +69,8 @@ public class ActivityServiceTest {
         Activity activity2 = this.activityService.findById(id2);
         Activity activity3 = this.activityService.findById(id3);
 
-        assertEquals(activity1.getId(), id1);
-        assertEquals(activity2.getId(), id2);
-        assertEquals(activity3.getId(), id3);
+        assertEquals(id1, activity1.getId());
+        assertEquals(id2, activity2.getId());
+        assertEquals(id3, activity3.getId());
     }
 }
