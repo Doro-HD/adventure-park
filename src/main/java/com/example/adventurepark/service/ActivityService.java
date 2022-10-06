@@ -29,10 +29,12 @@ public class ActivityService {
         ).toList();
     }
 
-    public Activity findById(int id) {
+    public ActivityResponse findById(int id, boolean includeAll) {
         Optional<Activity> activityOptional = this.activityRepository.findById(id);
 
-        return activityOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "test"));
+        Activity activity = activityOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "test"));
+
+        return new ActivityResponse(activity, includeAll);
     }
 
     
