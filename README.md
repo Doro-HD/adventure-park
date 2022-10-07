@@ -4,11 +4,11 @@
 #### Gruppenavn:
 - [x] Coderbois
 
-#### Gruppemedlemmer:
-- David
-- Troels
-- Victor
-- Lasse
+#### Gruppemedlemmer + GitHub:
+- David - Doro-HD
+- Troels - Troels-dat21B
+- Victor - victor-dat21b
+- Lasse - Lasse-R
 
 #### Projekt:
 - Adventure
@@ -34,6 +34,3 @@
 #### Konflikthåndtering:
 - Håndterer konflikter indbyrdes ved samtale. lykkedes dette ikke kontaktes 	underviser
 - Sørg for at løse problemer på en civiliseret måde uden skældsord og andet pjat og respekterer hinanden
-
-
-
