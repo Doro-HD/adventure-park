@@ -1,10 +1,7 @@
 package com.example.adventurepark.service;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
 import java.util.List;
+import java.util.function.Supplier;
 
 import com.example.adventurepark.dto.ActivityRequest;
 import com.example.adventurepark.dto.ActivityResponse;
@@ -17,6 +14,8 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.example.adventurepark.entity.Activity;
 import com.example.adventurepark.repository.ActivityRepository;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 public class ActivityServiceTest {
@@ -77,6 +76,18 @@ public class ActivityServiceTest {
         assertEquals(id1, activity1.getId());
         assertEquals(id2, activity2.getId());
         assertEquals(id3, activity3.getId());
+    }
+
+    @Test
+    void create() {
+        ActivityRequest activityRequest = new ActivityRequest();
+        activityRequest.setName("test");
+        activityRequest.setDescription("test desc");
+        activityRequest.setAgeRestriction(18);
+
+        ActivityResponse activityResponse = this.activityService.create(activityRequest);
+
+        assertDoesNotThrow(() -> this.activityService.findById(activityResponse.getId(), true));
     }
 
     @Test

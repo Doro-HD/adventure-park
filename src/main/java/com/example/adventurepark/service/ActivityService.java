@@ -38,6 +38,19 @@ public class ActivityService {
         return new ActivityResponse(activity, includeAll);
     }
 
+    public ActivityResponse create(ActivityRequest activityRequest) {
+        Activity activity = new Activity(
+                activityRequest.getId(),
+                activityRequest.getName(),
+                activityRequest.getAgeRestriction(),
+                activityRequest.getDescription()
+        );
+
+        activity = this.activityRepository.save(activity);
+
+        return new ActivityResponse(activity, true);
+    }
+
     public ActivityResponse editById(int id, ActivityRequest activityRequest, boolean includeAll) {
         Activity activity = ActivityRequest.getActivityEntity(activityRequest);
         activity = this.activityRepository.save(activity);
