@@ -31,7 +31,4 @@ public class ActitvityController {
     public ActivityResponse findById(@PathVariable("id") int id) {
         return this.activityService.findById(id, false);
     }
-
-    
-    
 }
