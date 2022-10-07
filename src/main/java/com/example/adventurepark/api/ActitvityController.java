@@ -1,12 +1,8 @@
 package com.example.adventurepark.api;
 
+import com.example.adventurepark.dto.ActivityRequest;
 import com.example.adventurepark.dto.ActivityResponse;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.adventurepark.entity.Activity;
 import com.example.adventurepark.service.ActivityService;
@@ -31,6 +27,11 @@ public class ActitvityController {
     @GetMapping("/{id}")
     public ActivityResponse findById(@PathVariable("id") int id) {
         return this.activityService.findById(id, false);
+    }
+
+    @PutMapping("/{id}")
+    public ActivityResponse editById(@PathVariable("id") int id, ActivityRequest activityRequest) {
+        return this.activityService.editById(id, activityRequest, true);
     }
 
     @DeleteMapping
