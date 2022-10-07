@@ -29,8 +29,13 @@ public class ActitvityController {
         return this.activityService.findById(id, false);
     }
 
+    @PostMapping
+    public ActivityResponse create(@RequestBody ActivityRequest activityRequest) {
+        return this.activityService.create(activityRequest);
+    }
+
     @PutMapping("/{id}")
-    public ActivityResponse editById(@PathVariable("id") int id, ActivityRequest activityRequest) {
+    public ActivityResponse editById(@PathVariable("id") int id, @RequestBody ActivityRequest activityRequest) {
         return this.activityService.editById(id, activityRequest, true);
     }
 
