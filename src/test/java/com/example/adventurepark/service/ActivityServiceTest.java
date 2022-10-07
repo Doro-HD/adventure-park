@@ -1,15 +1,19 @@
 package com.example.adventurepark.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
+import com.example.adventurepark.dto.ActivityRequest;
 import com.example.adventurepark.dto.ActivityResponse;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.example.adventurepark.entity.Activity;
 import com.example.adventurepark.repository.ActivityRepository;
@@ -73,5 +77,27 @@ public class ActivityServiceTest {
         assertEquals(id1, activity1.getId());
         assertEquals(id2, activity2.getId());
         assertEquals(id3, activity3.getId());
+    }
+
+    @Test
+    void deleteById() {
+        this.activityService.deleteById(id1);
+
+        assertThrows(ResponseStatusException.class, () -> {
+            this.activityService.findById(id1, false);
+        });
+    }
+
+    @Test
+    void editById() {
+        ActivityResponse activityToEdit = activityService.findById(id2, true);
+        String newName = "Sumo";
+
+        ActivityRequest activityRequest = new ActivityRequest(activityToEdit.getId(), activityToEdit.getName(), activityToEdit.getAgeRestriction(), activityToEdit.getDescription());
+        activityRequest.setName(newName);
+
+        ActivityResponse editedActivity = this.activityService.editById(id1, activityRequest, false);
+
+        assertEquals(editedActivity.getName(), newName);
     }
 }

@@ -2,6 +2,7 @@ package com.example.adventurepark.api;
 
 import com.example.adventurepark.dto.ActivityResponse;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,5 +31,10 @@ public class ActitvityController {
     @GetMapping("/{id}")
     public ActivityResponse findById(@PathVariable("id") int id) {
         return this.activityService.findById(id, false);
+    }
+
+    @DeleteMapping
+    public void deleteById(@PathVariable int id) {
+        this.activityService.deleteById(id);
     }
 }
