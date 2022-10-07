@@ -30,4 +30,8 @@ public class ActivityResponse {
         }
     }
 
+    public static Activity getActivityEntity(ActivityResponse activityResponse) {
+        return new Activity(activityResponse.id, activityResponse.name, activityResponse.ageRestriction, activityResponse.description); 
+    }
+
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import com.example.adventurepark.dto.ActivityRequest;
 import com.example.adventurepark.dto.ActivityResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,7 @@ public class ActivityService {
         List<Activity> activities = this.activityRepository.findAll();
 
         return activities.stream().map(
-                activity -> new ActivityResponse(activity, false)
+                activity -> new ActivityResponse(activity, true)
         ).toList();
     }
 
@@ -35,6 +36,19 @@ public class ActivityService {
         Activity activity = activityOptional.orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST, "test"));
 
         return new ActivityResponse(activity, includeAll);
+    }
+
+    public ActivityResponse editById(int id, ActivityRequest activityRequest, boolean includeAll) {
+        Activity activity = ActivityRequest.getActivityEntity(activityRequest);
+        activity = this.activityRepository.save(activity);
+
+        ActivityResponse activityResponse = new ActivityResponse(activity, true);
+
+        return activityResponse;
+    }
+
+    public void deleteById(int id) {
+        this.activityRepository.deleteById(id);
     }
 
     
