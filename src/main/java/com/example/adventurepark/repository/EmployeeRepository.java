@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import com.example.adventurepark.entity.Employee;
 
 @Repository
-public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
+public interface EmployeeRepository extends JpaRepository<Employee, String> {
     
     Optional<Employee> findByUsername(String username);
 

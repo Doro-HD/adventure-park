@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.adventurepark.dto.EmployeeRequest;
 import com.example.adventurepark.entity.Employee;
 import com.example.adventurepark.repository.EmployeeRepository;
 
@@ -19,7 +20,7 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public void signIn(Employee employeeSignIn) {
+    public void signIn(EmployeeRequest employeeSignIn) {
         Optional<Employee> employeeOptional = this.employeeRepository.findByUsername(employeeSignIn.getUsername());
 
         if (employeeOptional.isPresent()) {

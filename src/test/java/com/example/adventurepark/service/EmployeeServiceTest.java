@@ -1,20 +1,16 @@
 package com.example.adventurepark.service;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.util.Optional;
-
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.security.crypto.bcrypt.BCrypt;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.example.adventurepark.dto.EmployeeRequest;
 import com.example.adventurepark.entity.Employee;
 import com.example.adventurepark.repository.EmployeeRepository;
 
@@ -50,16 +46,16 @@ public class EmployeeServiceTest {
 
     @Test
     void signInCorrect() {
-        Employee employee = new Employee(username, password);
-        assertDoesNotThrow(() -> this.employeeService.signIn(employee));
+        EmployeeRequest employeeRequest = new EmployeeRequest(username, password);
+        assertDoesNotThrow(() -> this.employeeService.signIn(employeeRequest));
     }
 
     @Test
     void signInInCorrect() {
-        Employee employee = new Employee(username, password + "incorrect");
+        EmployeeRequest employeeRequest = new EmployeeRequest(username, password + "incorrect");
 
         assertThrows(ResponseStatusException.class, () -> {
-            this.employeeService.signIn(employee);
+            this.employeeService.signIn(employeeRequest);
         });
     }
 }
