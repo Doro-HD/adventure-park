@@ -3,6 +3,10 @@
 
 name: Build and deploy JAR app to Azure Web App - adventure-park-api
 
+env:
+  JWT_ISSUER: test
+  JWT_SECRET: test
+
 on:
   push:
     branches:
