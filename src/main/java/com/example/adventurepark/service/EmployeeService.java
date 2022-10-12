@@ -1,5 +1,10 @@
 package com.example.adventurepark.service;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.Optional;
 
 import com.auth0.jwt.JWT;
@@ -30,18 +35,10 @@ public class EmployeeService {
             Employee employeeFound = employeeOptional.get();
 
             if (BCrypt.checkpw(employeeSignIn.getUserPassword(), employeeFound.getUserPassword())) {
-                String jwt;
-                try {
-                    Algorithm algorithm = Algorithm.HMAC256(System.getenv("jwt_secret"));
-                    jwt = JWT.create()
-                            .withIssuer(System.getenv("jwt_issuer"))
-                            .withClaim("username", employeeFound.getUsername())
-                            .sign(algorithm);
-                } catch (JWTCreationException exception){
-                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "jwt configuration error");
-                }
+                JWTHandler jwt = new JWTHandler();
+                jwt.sign(employeeFound.getUsername());
 
-                return jwt;
+                return jwt.getAccessToken();
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password");
             }

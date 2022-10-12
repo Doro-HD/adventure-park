@@ -59,18 +59,10 @@ public class EmployeeServiceTest {
                 () -> {
                     String jwt = this.employeeService.signIn(employeeRequest);
 
-                    Algorithm algorithm = Algorithm.HMAC256(System.getenv("jwt_secret"));
-                    JWTVerifier verifier = JWT.require(algorithm)
-                            .withIssuer(System.getenv("jwt_issuer"))
-                            .build(); //Reusable verifier instance
-                    //Will throw error here if not valid
-                    DecodedJWT decodedJWT = verifier.verify(jwt);
+                    JWTHandler jwtHandler = new JWTHandler();
+                    jwtHandler.decode(jwt);
 
-                    //test if we can identify user from jwt
-                    Claim usernameClaim = decodedJWT.getClaim("username");
-                    String username = usernameClaim.asString();
-
-                    assertEquals(username, correctUsername);
+                    assertEquals(jwtHandler.getUsername(), correctUsername);
 
                 }
         );
