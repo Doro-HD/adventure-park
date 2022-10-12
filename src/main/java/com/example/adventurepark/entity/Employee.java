@@ -18,17 +18,9 @@ import lombok.Setter;
 public class Employee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
-
     private String username;
 
     private String userPassword;
-
-    public Employee(String username, String userPassword) {
-        this.username = username;
-        this.userPassword = userPassword;
-    }
     
 }
 
