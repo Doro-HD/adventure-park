@@ -6,6 +6,10 @@ import org.springframework.web.bind.annotation.*;
 
 import com.example.adventurepark.entity.Activity;
 import com.example.adventurepark.service.ActivityService;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RestController
@@ -30,17 +34,18 @@ public class ActitvityController {
     }
 
     @PostMapping
-    public ActivityResponse create(@RequestBody ActivityRequest activityRequest) {
-        return this.activityService.create(activityRequest);
+    public ActivityResponse create(@RequestBody ActivityRequest activityRequest, @CookieValue("jwt") String jwtAccessToken) {
+
+        return this.activityService.create(activityRequest, jwtAccessToken);
     }
 
     @PutMapping("/{id}")
-    public ActivityResponse editById(@PathVariable("id") int id, @RequestBody ActivityRequest activityRequest) {
-        return this.activityService.editById(id, activityRequest, true);
+    public ActivityResponse editById(@PathVariable("id") int id, @RequestBody ActivityRequest activityRequest, @CookieValue("jwt") String jwtAccessToken) {
+        return this.activityService.editById(id, activityRequest, true, jwtAccessToken);
     }
 
-    @DeleteMapping
-    public void deleteById(@PathVariable int id) {
-        this.activityService.deleteById(id);
+    @DeleteMapping("/{id}")
+    public void deleteById(@PathVariable("id") int id, @CookieValue("jwt") String jwtAccessToken) {
+        this.activityService.deleteById(id, jwtAccessToken);
     }
 }

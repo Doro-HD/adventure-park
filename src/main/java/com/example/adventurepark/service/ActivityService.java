@@ -38,7 +38,10 @@ public class ActivityService {
         return new ActivityResponse(activity, includeAll);
     }
 
-    public ActivityResponse create(ActivityRequest activityRequest) {
+    public ActivityResponse create(ActivityRequest activityRequest, String jwtAccessToken) {
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.decode(jwtAccessToken);
+
         Activity activity = new Activity(
                 activityRequest.getId(),
                 activityRequest.getName(),
@@ -51,7 +54,10 @@ public class ActivityService {
         return new ActivityResponse(activity, true);
     }
 
-    public ActivityResponse editById(int id, ActivityRequest activityRequest, boolean includeAll) {
+    public ActivityResponse editById(int id, ActivityRequest activityRequest, boolean includeAll, String jwtAccessToken) {
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.decode(jwtAccessToken);
+
         Activity activity = ActivityRequest.getActivityEntity(activityRequest);
         activity = this.activityRepository.save(activity);
 
@@ -60,7 +66,10 @@ public class ActivityService {
         return activityResponse;
     }
 
-    public void deleteById(int id) {
+    public void deleteById(int id, String jwtAccessToken) {
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.decode(jwtAccessToken);
+
         this.activityRepository.deleteById(id);
     }   
 }

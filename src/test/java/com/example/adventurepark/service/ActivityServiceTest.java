@@ -85,14 +85,20 @@ public class ActivityServiceTest {
         activityRequest.setDescription("test desc");
         activityRequest.setAgeRestriction(18);
 
-        ActivityResponse activityResponse = this.activityService.create(activityRequest);
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.sign("admin");
+
+        ActivityResponse activityResponse = this.activityService.create(activityRequest, jwtHandler.getAccessToken());
 
         assertDoesNotThrow(() -> this.activityService.findById(activityResponse.getId(), true));
     }
 
     @Test
     void deleteById() {
-        this.activityService.deleteById(id1);
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.sign("admin");
+
+        this.activityService.deleteById(id1, jwtHandler.getAccessToken());
 
         assertThrows(ResponseStatusException.class, () -> {
             this.activityService.findById(id1, false);
@@ -101,13 +107,16 @@ public class ActivityServiceTest {
 
     @Test
     void editById() {
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.sign("admin");
+
         ActivityResponse activityToEdit = activityService.findById(id2, true);
         String newName = "Sumo";
 
         ActivityRequest activityRequest = new ActivityRequest(activityToEdit.getId(), activityToEdit.getName(), activityToEdit.getAgeRestriction(), activityToEdit.getDescription());
         activityRequest.setName(newName);
 
-        ActivityResponse editedActivity = this.activityService.editById(id1, activityRequest, false);
+        ActivityResponse editedActivity = this.activityService.editById(id1, activityRequest, false, jwtHandler.getAccessToken());
 
         assertEquals(editedActivity.getName(), newName);
     }
