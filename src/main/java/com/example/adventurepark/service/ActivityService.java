@@ -62,8 +62,5 @@ public class ActivityService {
 
     public void deleteById(int id) {
         this.activityRepository.deleteById(id);
-    }
-
-    
-    
+    }   
 }
