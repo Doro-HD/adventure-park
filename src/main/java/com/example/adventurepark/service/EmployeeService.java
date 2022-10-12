@@ -2,6 +2,9 @@ package com.example.adventurepark.service;
 
 import java.util.Optional;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.exceptions.JWTCreationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
@@ -20,14 +23,25 @@ public class EmployeeService {
         this.employeeRepository = employeeRepository;
     }
 
-    public void signIn(EmployeeRequest employeeSignIn) {
+    public String signIn(EmployeeRequest employeeSignIn) {
         Optional<Employee> employeeOptional = this.employeeRepository.findByUsername(employeeSignIn.getUsername());
 
         if (employeeOptional.isPresent()) {
             Employee employeeFound = employeeOptional.get();
 
             if (BCrypt.checkpw(employeeSignIn.getUserPassword(), employeeFound.getUserPassword())) {
+                String jwt;
+                try {
+                    Algorithm algorithm = Algorithm.HMAC256(System.getenv("jwt_secret"));
+                    jwt = JWT.create()
+                            .withIssuer(System.getenv("jwt_issuer"))
+                            .withClaim("username", employeeFound.getUsername())
+                            .sign(algorithm);
+                } catch (JWTCreationException exception){
+                    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "jwt configuration error");
+                }
 
+                return jwt;
             } else {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password");
             }
@@ -35,11 +49,4 @@ public class EmployeeService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Could not find employee");
         }
     }
-
-    private String genHash(String password) {
-        String salt = BCrypt.gensalt(12);
-
-        return BCrypt.hashpw(password, salt);
-    }
-
 }

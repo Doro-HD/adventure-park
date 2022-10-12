@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.adventurepark.dto.EmployeeRequest;
 import com.example.adventurepark.service.EmployeeService;
 
-@CrossOrigin
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
+@CrossOrigin
 @RequestMapping("api/employee")
 public class EmployeeController {
 
@@ -21,12 +24,21 @@ public class EmployeeController {
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
-    
-    @PostMapping()
-    public ResponseEntity<String> signIn(@RequestBody EmployeeRequest employeeRequest) {
-        employeeService.signIn(employeeRequest);
-        
-        return new ResponseEntity<>("Sign-In successful", HttpStatus.OK);
+
+    @PostMapping("/auth")
+    public ResponseEntity<String> signIn(@RequestBody EmployeeRequest employeeRequest, HttpServletResponse response) {
+        String jwt = employeeService.signIn(employeeRequest);
+
+        Cookie cookie = new Cookie("jwt", jwt);
+        cookie.setHttpOnly(true);
+        cookie.setMaxAge(60 * 60);
+        cookie.setPath("/");
+
+        response.addCookie(cookie);
+
+        return new ResponseEntity<>("Successful sign in", HttpStatus.OK);
     }
 
 }
+
+
