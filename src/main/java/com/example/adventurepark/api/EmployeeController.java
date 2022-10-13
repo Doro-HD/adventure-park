@@ -2,6 +2,7 @@ package com.example.adventurepark.api;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.adventurepark.dto.EmployeeRequest;
 import com.example.adventurepark.service.EmployeeService;
+import com.example.adventurepark.service.JWTHandler;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -25,7 +27,7 @@ public class EmployeeController {
         this.employeeService = employeeService;
     }
 
-    @PostMapping("/auth")
+    @PostMapping("/authenticate")
     public ResponseEntity<String> signIn(@RequestBody EmployeeRequest employeeRequest, HttpServletResponse response) {
         String jwt = employeeService.signIn(employeeRequest);
 
@@ -39,6 +41,13 @@ public class EmployeeController {
         return new ResponseEntity<>("Successful sign in", HttpStatus.OK);
     }
 
+    @PostMapping("/authorize")
+    public ResponseEntity<String> isAuthorized(@CookieValue("jwt") String jwtAccessToken) {
+        JWTHandler jwtHandler = new JWTHandler();
+        jwtHandler.decode(jwtAccessToken);
+
+        return new ResponseEntity<>("User Authorized" ,HttpStatus.OK);
+    }
 }
 
 
