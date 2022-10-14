@@ -51,7 +51,8 @@ public class JWTHandler {
             Algorithm algorithm = Algorithm.HMAC256(System.getenv(secretEnvName));
             JWTVerifier verifier = JWT.require(algorithm)
                     .withIssuer(System.getenv(issuerEnvName))
-                    .build(); //Reusable verifier instance
+                    .build();
+            
             //Will throw error here if not valid
             DecodedJWT decodedJWT = verifier.verify(jwt);
 
