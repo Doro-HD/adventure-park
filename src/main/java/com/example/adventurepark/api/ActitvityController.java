@@ -3,13 +3,7 @@ package com.example.adventurepark.api;
 import com.example.adventurepark.dto.ActivityRequest;
 import com.example.adventurepark.dto.ActivityResponse;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.adventurepark.entity.Activity;
 import com.example.adventurepark.service.ActivityService;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RestController
